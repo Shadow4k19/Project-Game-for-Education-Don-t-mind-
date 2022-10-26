@@ -12,6 +12,7 @@ import javax.swing.Timer;
 
 public class Hound extends Enemy{
      Gamepanel gp;
+     Blast blast = new Blast();
      public Hound(Gamepanel gp){
          this.gp = gp;
          setDefaultValues();
@@ -40,6 +41,7 @@ public class Hound extends Enemy{
                     @Override
                     public void actionPerformed(ActionEvent e){
                         State = "ATK";
+                        blast.updateBlast();
                         gp.repaint();
                      }
     });
@@ -63,5 +65,6 @@ public class Hound extends Enemy{
                  break;
          }
           g2.drawImage(image,x, y, 200, 200,null);
+          blast.draw(g2,1);
      }
 }

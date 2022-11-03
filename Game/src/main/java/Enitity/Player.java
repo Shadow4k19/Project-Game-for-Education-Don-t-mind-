@@ -16,8 +16,10 @@ public class Player extends Entity {
     
     Gamepanel gp;
     KeyHandler keyH;
-    public int lastPress = 0;
+    public int lastPress;
     public long lassPress = 0;
+    public int count = 0;
+    public int sprite = 1;
     
     public Player(Gamepanel gp,KeyHandler keyH){
         this.gp = gp;
@@ -35,9 +37,9 @@ public class Player extends Entity {
         direction = "right";
     }
     public void update(){
-        if(System.currentTimeMillis()-lassPress>900){
-        if(lastPress<=2){
-             lastPress++;
+        if(keyH.leftPressed==true||keyH.rightPressed==true||keyH.upPressed==true){
+              if(System.currentTimeMillis()-lassPress>70){
+        if(lastPress<2){
             if(keyH.upPressed == true){
                 direction = "up";
                 y -= jumphigh;
@@ -46,28 +48,43 @@ public class Player extends Entity {
                     public void actionPerformed(ActionEvent e) {
                         y += jumphigh;
                         gp.repaint();
-                        //keyH.upPressed = false;
                 }
             });
             timer.setRepeats(false);
             timer.start();
             gp.repaint();
             }
+            lastPress += 1;
+            //System.out.println(lastPress);
         }
         lassPress = System.currentTimeMillis();
         }
+            if(y==350){
+            if(keyH.leftPressed == true){
+                direction = "left";
+                x -= speed;
+            }
+            else if(keyH.rightPressed == true){
+                direction = "right";
+                x += speed;
+            }
+        }     
+    }
+
         if(lastPress==2&&y==350){
             lastPress = 0;
         }
-        else if(keyH.leftPressed == true){
-            direction = "left";
-            x -= speed;
+        count++;
+        if(count >10){
+            if(sprite==1){
+                sprite=2;
+            }
+            else if(sprite == 2){
+                sprite=1;
+            }
+            count = 0;
         }
-        else if(keyH.rightPressed == true){
-            direction = "right";
-            x += speed;
-        }
-          if(x<0){
+        if(x<0){
             x = 0;
         }
         if(x>550){
@@ -77,9 +94,12 @@ public class Player extends Entity {
 
     public BufferedImage getImage(){
         try{
-            right1 = ImageIO.read(new File("character\\Maincharacter IDLE.png"));
-            left1 = ImageIO.read(new File("character\\Maincharacter IDLE - Copy.png"));
-            up = ImageIO.read(new File("character\\Maincharacter IDLE.png"));
+            right1 = ImageIO.read(new File("character\\Main_Walk_03.png"));
+            right2 = ImageIO.read(new File("character\\Main_Walk_04.png"));
+            left1 = ImageIO.read(new File("character\\Main_Walk_01.png"));
+            left2 = ImageIO.read(new File("character\\Main_Walk_02.png"));
+            up2 = ImageIO.read(new File("character\\Main_Jump_01.png"));
+            up1 = ImageIO.read(new File("character\\Main_Jump_02.png"));
         }
         catch(Exception e){
             e.printStackTrace();
@@ -91,16 +111,30 @@ public class Player extends Entity {
          BufferedImage image1 = null;
          switch(direction){
              case"left":
-                 image1 = left1 ;
+                 if(sprite == 1){
+                    image1 = left1 ;
+                 }
+                 else if(sprite == 2){
+                    image1 = left2;
+                 }
                  break;
              case"right":
-                 image1 = right1;
+                 if(sprite==1){
+                    image1 = right1;
+                 }
+                 else if(sprite==2){
+                     image1 = right2;
+                 }
                  break;
              case"up":
-                 image1 = up;
+                 image1 = up1;
                  break;
          }
           g2.drawImage(image1,x, y, 100, 100,null);
+         if(y == 350){
+             image1 = left1;
+             gp.repaint();
+         }
      }
 }
     

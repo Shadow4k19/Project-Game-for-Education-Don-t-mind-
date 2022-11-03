@@ -1,6 +1,7 @@
 
 package com.mycompany.game;
 
+import Backgound.backgound;
 import Enitity.Hound;
 import Enitity.Player;
 import java.awt.Color;
@@ -28,7 +29,7 @@ public class Gamepanel extends JPanel implements Runnable{
     Thread gameThread;
     Player player = new Player(this, keyH);
     Hound hound = new Hound(this);
-    TileManager tilem = new TileManager(this); 
+    backgound backgound = new backgound(this);
     
     int FPS = 60;
     
@@ -97,7 +98,8 @@ public class Gamepanel extends JPanel implements Runnable{
         
         g2.setColor(Color.white);
         
-        tilem.draw(g2);
+        //tilem.draw(g2);
+        backgound.draw(g2);
         
         player.draw(g2);
         hound.draw(g2);

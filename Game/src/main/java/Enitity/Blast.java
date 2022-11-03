@@ -25,8 +25,8 @@ public class Blast {
     
     public void SetDefaultBlast(){
         x = 580;
-        y = 295;
-        Speed = 2;
+        y = 355;
+        Speed = 5;
     }
     
     public void updateBlast(){
@@ -41,13 +41,14 @@ public class Blast {
          timer.start();
          if(x<=0){
              //dispear
+             x = 580;
          }
     }
     public BufferedImage getImageBlast(int count){
         BufferedImage image = null;
         try{
            if(count == 1){
-           image = ImageIO.read(new File("character\\Hound_Atk.png"));
+           image = ImageIO.read(new File("attack animation\\Blast.png"));
            return image;
            }
         }
@@ -58,7 +59,7 @@ public class Blast {
     }
   
     public void draw(Graphics2D g2,int count){
-        g2.drawImage(getImageBlast(count),x, y, 100, 50,null);
+        g2.drawImage(getImageBlast(count),x, y, 150, 100,null);
     }
     
 }

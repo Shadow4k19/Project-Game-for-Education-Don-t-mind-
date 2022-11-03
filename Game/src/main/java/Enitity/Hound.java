@@ -40,17 +40,16 @@ public class Hound extends Enemy{
         Timer timer = new Timer(3000,new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e){
-                        State = "ATK";
-                        blast.updateBlast();
+                        State = "IDLE";
                         gp.repaint();
                      }
     });
     timer.setDelay(10000);
     timer.setRepeats(false);
     timer.start();
-    State = "IDLE";
+    State = "ATK";
+    blast.updateBlast();
     gp.repaint();
-    
     }
      public void draw(Graphics2D g2){
          

@@ -7,12 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
-public class Hound extends Enemy{
+public class Hound extends Enemy {
      Gamepanel gp;
-     Blast blast = new Blast();
+     //Blast blast = new Blast(gp);
+     public ArrayList<Blast> blast1 = new ArrayList<Blast>();
      public Hound(Gamepanel gp){
          this.gp = gp;
          setDefaultValues();
@@ -37,20 +39,11 @@ public class Hound extends Enemy{
         return idle;
     }
         public void update(){
-        Timer timer = new Timer(3000,new ActionListener(){
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                        State = "IDLE";
-                        gp.repaint();
-                     }
-    });
-    timer.setDelay(10000);
-    timer.setRepeats(false);
-    timer.start();
-    State = "ATK";
-    blast.updateBlast();
-    gp.repaint();
-    }
+            //State = "ATK";
+            //gp.repaint();
+            //thread.start();
+        }
+                     
      public void draw(Graphics2D g2){
          
          BufferedImage image = null;
@@ -62,8 +55,38 @@ public class Hound extends Enemy{
              case"ATK":
                  image = atk;
                  break;
+             default:{
+                 image = idle;
+                 break;
+             }
          }
           g2.drawImage(image,x, y, 200, 200,null);
-          blast.draw(g2,1);
+            /*for (int i = 0; i < blast1.size(); i++) {
+                Blast blast = blast1.get(i);
+                blast.draw(g2, i);
+                blast.updateBlast();
+                blast.count++;
+                if (blast.x < 0) {
+                    blast1.remove(i);
+                }
+            }*/
      }
+   Thread thread = new Thread(new Runnable() {
+    @Override
+    public void run() {
+        while(true){
+        State = "IDLE";
+        //blast.updateBlast();
+        gp.repaint();
+        State = "ATK";
+        blast1.add(new Blast(x,y+50));
+        gp.repaint();
+        try{
+            thread.sleep(10);
+        }catch(Exception e){
+            System.err.println(e);
+        }
+    }
+    }
+   });
 }

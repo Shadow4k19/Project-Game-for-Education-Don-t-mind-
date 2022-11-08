@@ -2,6 +2,7 @@
 package com.mycompany.game;
 
 import Backgound.backgound;
+import Enitity.Blast;
 import Enitity.Hound;
 import Enitity.Player;
 import java.awt.Color;
@@ -10,9 +11,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import tile.TileManager;
 
 public class Gamepanel extends JPanel implements Runnable{
     
@@ -30,26 +31,9 @@ public class Gamepanel extends JPanel implements Runnable{
     Player player = new Player(this, keyH);
     Hound hound = new Hound(this);
     backgound backgound = new backgound(this);
+    public ArrayList<Blast> blast1 = new ArrayList<Blast>();
     
     int FPS = 60;
-    
-    //set Position player
-    int playerX = 100;
-    int playerY = 350;
-    int playerSpeed = 5;
-    int playerJumphigh = 150;
-    int lastPress = 0 ;
-    long lassPress = 0;
-    
-    int MonsterX = 600;
-    int MonsterY = 285;
-    
-    double drawInterval = 1000000000/FPS;
-    double delta = 0;
-    long lastTime = System.nanoTime();
-    long currentTime;
-    long timer = 0;
-    int drawCount = 0;
     
     public Gamepanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHieght));
@@ -65,26 +49,44 @@ public class Gamepanel extends JPanel implements Runnable{
 
     @Override
     public void run() {
-        
-        while(gameThread != null){
-            currentTime = System.nanoTime();
-            
-            delta += (currentTime - lastTime)/drawInterval;
-            timer +=(currentTime - lastTime);
-            lastTime = currentTime;
-            
-            if(delta>=1){
-                update();
-                repaint();
-                delta--;
-                drawCount++;
+       //double timePerFrame = 1000000000.0 / FPS ;
+        double timePerUpdate = 1000000000.0 / FPS ;
+
+        long previousTime = System.nanoTime() ;
+
+        int frame = 0 ;
+        int updates = 0 ;
+        long lastCheck = System.currentTimeMillis() ;
+
+        double deltaU = 0 ;
+        double deltaF = 0 ;
+
+        while(true) {
+            long currentTime = System.nanoTime() ;
+
+            deltaU += (currentTime - previousTime) / timePerUpdate ;
+            deltaF += (currentTime - previousTime) / timePerUpdate ;
+            previousTime = currentTime ;
+
+            if(deltaU >= 1){
+                update() ;
+                updates++ ;
+                deltaU-- ;
             }
-            if(timer>= 1000000000){
-                drawCount = 0;
-                timer = 0;
+            if(deltaF >= 1){
+                repaint() ;
+                frame++ ;
+                deltaF-- ;
             }
-           
-    }
+
+            if(System.currentTimeMillis() - lastCheck >= 1000){
+                lastCheck = System.currentTimeMillis() ;
+                //System.out.println("FPS : " + frame + " | UPS : "+ updates);
+                //System.out.println(TILES_SIZE) ;
+                frame = 0 ;
+                updates = 0 ;
+            }
+        }
     }
     
     public void update(){
@@ -103,17 +105,15 @@ public class Gamepanel extends JPanel implements Runnable{
         
         player.draw(g2);
         hound.draw(g2);
-        Timer timer = new Timer(-1000000000,new ActionListener(){
-             @Override
-            public void actionPerformed(ActionEvent e) {
-                hound.draw(g2);
-                repaint();
+        for (int i = 0; i < blast1.size(); i++) {
+            Blast blast = blast1.get(i);
+            blast.draw(g2, i);
+            blast.updateBlast();
+            blast.count++;
+            if (blast.x < 0) {
+                blast1.remove(i);
             }
-        });
-        timer.setDelay(10000000);
-        timer.setRepeats(false);
-        timer.stop();
-        g2.dispose();
+            }
 
     }
     

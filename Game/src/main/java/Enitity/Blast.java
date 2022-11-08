@@ -8,24 +8,30 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
 
-public class Blast {
+public class Blast{
     
     public int Speed;
     public int x;
     public int y;
     public int count;
+    public BufferedImage image = null;
+    //Gamepanel gp ;
+    Thread thered = new Thread();
 
-    public Blast() {
+    public Blast(int x , int y) {
+     //this.gp = gp;
+     this.x = x;
+     this.y = y;
+     thered.start();
      SetDefaultBlast();
      getImageBlast(count);
     }
     
     public void SetDefaultBlast(){
-        x = 580;
-        y = 355;
         Speed = 5;
     }
     
@@ -41,11 +47,11 @@ public class Blast {
          timer.start();
          if(x<=0){
              //dispear
-             x = 580;
+             image = null;
+             
          }
     }
     public BufferedImage getImageBlast(int count){
-        BufferedImage image = null;
         try{
            if(count == 1){
            image = ImageIO.read(new File("attack animation\\Blast.png"));
@@ -61,5 +67,15 @@ public class Blast {
     public void draw(Graphics2D g2,int count){
         g2.drawImage(getImageBlast(count),x, y, 150, 100,null);
     }
+
+    Thread thread = new Thread(new Runnable() {
+    //@Override
+    public void run() {
+       while(true){
+           x-=Speed;
+           //gp.repaint();
+       }
+    }
     
+});
 }

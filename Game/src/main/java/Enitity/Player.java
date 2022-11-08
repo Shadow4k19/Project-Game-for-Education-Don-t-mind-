@@ -8,11 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Player extends Entity {
+public class Player extends Entity{
     
     Gamepanel gp;
     KeyHandler keyH;
@@ -20,11 +21,15 @@ public class Player extends Entity {
     public long lassPress = 0;
     public int count = 0;
     public int sprite = 1;
+    //Thread theard = new Thread(this);
+    //Blast blast1 = new Blast();
+    public ArrayList<Blast> blast1 = new ArrayList<Blast>();
     
     public Player(Gamepanel gp,KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
         
+        //theard.start();
         setDefaultValues();
         getImage();
         
@@ -68,11 +73,9 @@ public class Player extends Entity {
                 direction = "right";
                 x += speed;
             }
-        }     
-    }
-
-        if(lastPress==2&&y==350){
-            lastPress = 0;
+            if(keyH.ATK == true){
+                 blast1.add(new Blast(x,y));
+            }
         }
         count++;
         if(count >10){
@@ -83,6 +86,11 @@ public class Player extends Entity {
                 sprite=1;
             }
             count = 0;
+        }    
+    }
+
+        if(lastPress==2&&y==350){
+            lastPress = 0;
         }
         if(x<0){
             x = 0;
@@ -100,6 +108,9 @@ public class Player extends Entity {
             left2 = ImageIO.read(new File("character\\Main_Walk_02.png"));
             up2 = ImageIO.read(new File("character\\Main_Jump_01.png"));
             up1 = ImageIO.read(new File("character\\Main_Jump_02.png"));
+            Atkright = ImageIO.read(new File("character\\Main_ATK_02.png"));
+            AtkLeft = ImageIO.read(new File("character\\Main_ATK_1.png"));
+            
         }
         catch(Exception e){
             e.printStackTrace();
@@ -117,6 +128,18 @@ public class Player extends Entity {
                  else if(sprite == 2){
                     image1 = left2;
                  }
+                 if(keyH.ATK == true){
+                     image1 = AtkLeft;
+                       for (int i = 0; i < blast1.size(); i++) {
+                        Blast blast = blast1.get(i);
+                        blast.draw(g2, i);
+                        blast.updateBlast();
+                        blast.count++;
+                    if (blast.x < 0) {
+                        blast1.remove(i);
+                    }
+                    }
+                 }
                  break;
              case"right":
                  if(sprite==1){
@@ -124,6 +147,18 @@ public class Player extends Entity {
                  }
                  else if(sprite==2){
                      image1 = right2;
+                 }
+                 if(keyH.ATK == true){
+                     image1 = Atkright;
+                       for (int i = 0; i < blast1.size(); i++) {
+                        Blast blast = blast1.get(i);
+                        blast.draw(g2, i);
+                        blast.updateBlast();
+                        blast.count++;
+                    if (blast.x < 0) {
+                        blast1.remove(i);
+                    }
+                    }
                  }
                  break;
              case"up":
@@ -136,5 +171,20 @@ public class Player extends Entity {
              gp.repaint();
          }
      }
+
+    Thread thread = new Thread(new Runnable() {
+    @Override
+    public void run() {
+        while(true){
+        gp.repaint();       
+        try{
+            thread.sleep(1000);
+        }catch(Exception e){
+            System.err.println(e);
+        }
+        
+    }
+    }
+});
 }
     

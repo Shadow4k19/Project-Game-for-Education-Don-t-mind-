@@ -3,17 +3,16 @@ package com.mycompany.game;
 
 import Backgound.backgound;
 import Enitity.Blast;
+import Enitity.Entity;
 import Enitity.Hound;
 import Enitity.Player;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-import javax.swing.Timer;
+
 
 public class Gamepanel extends JPanel implements Runnable{
     
@@ -26,12 +25,20 @@ public class Gamepanel extends JPanel implements Runnable{
     public final int screenWidth = titleSize * maxScreenCol;
     public final int screenHieght = titleSize * maxScreenRow;
     
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
-    Player player = new Player(this, keyH);
+    Player player = new Player(this, keyH,0,350,3);
     Hound hound = new Hound(this);
     backgound backgound = new backgound(this);
-    public ArrayList<Blast> blast1 = new ArrayList<Blast>();
+    public UI ui = new UI(this);
+    public ArrayList<Entity> projecttile = new ArrayList<>();
+    public ArrayList<Entity> Entitylist = new ArrayList<>();
+    
+    public int gameState;
+    public final int titlleState = 0;
+    public final int playState = 1;
+    public final int pauseState2 = 2;
+    public int Stage = 0;
     
     int FPS = 60;
     
@@ -41,10 +48,14 @@ public class Gamepanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
-}
+    }
+    public void setupgame(){
+        gameState = 0;
+    }
     public void startGameThead(){
         gameThread = new Thread(this);
         gameThread.start();
+        setupgame();
     }
 
     @Override
@@ -81,8 +92,6 @@ public class Gamepanel extends JPanel implements Runnable{
 
             if(System.currentTimeMillis() - lastCheck >= 1000){
                 lastCheck = System.currentTimeMillis() ;
-                //System.out.println("FPS : " + frame + " | UPS : "+ updates);
-                //System.out.println(TILES_SIZE) ;
                 frame = 0 ;
                 updates = 0 ;
             }
@@ -90,8 +99,29 @@ public class Gamepanel extends JPanel implements Runnable{
     }
     
     public void update(){
-        player.update();
-        hound.update();
+        if(gameState == playState){
+            player.update();
+              for(int i = 0 ; i < projecttile.size();i++){
+            if(projecttile.get(i) != null){
+                projecttile.get(i).update();
+            }
+            if(projecttile.get(i).alive == false){
+                projecttile.remove(i);
+            }
+        }
+        if(Stage == 1){
+            hound.update();
+        }
+        if(Stage == 2){
+            
+        }
+        if(Stage == 3){
+            
+        }
+        }
+        if(gameState == pauseState2){
+            //Pause;
+        }
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -101,20 +131,39 @@ public class Gamepanel extends JPanel implements Runnable{
         g2.setColor(Color.white);
         
         //tilem.draw(g2);
-        backgound.draw(g2);
-        
-        player.draw(g2);
-        hound.draw(g2);
-        for (int i = 0; i < blast1.size(); i++) {
-            Blast blast = blast1.get(i);
-            blast.draw(g2, i);
-            blast.updateBlast();
-            blast.count++;
-            if (blast.x < 0) {
-                blast1.remove(i);
+        if(gameState == titlleState){
+            backgound.draw(g2);
+            ui.draw(g2);
+        }
+        else{
+        if(Stage==1){
+            backgound.draw(g2);
+            player.draw(g2);
+            hound.draw(g2);
+            ui.draw(g2);
+        }
+        if(Stage == 2){
+            backgound.draw(g2);
+            player.draw(g2);
+            ui.draw(g2);
+        }
+        if(Stage == 3){
+            backgound.draw(g2);
+            player.draw(g2);
+            ui.draw(g2);
+        }
+        if(gameState == pauseState2){
+            //Pause;
+            ui.draw(g2);
+        }
+        for(int i = 0 ; i< projecttile.size(); i++){
+            if(projecttile.get(i)!= null){
+                Entitylist.add(projecttile.get(i));
             }
+            if(projecttile.get(i).alive == false){
+                Entitylist.remove(i);
             }
-
-    }
-    
+        }
+        }
+}
 }

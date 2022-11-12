@@ -8,8 +8,11 @@ import javax.swing.Timer;
 
 public class KeyHandler implements KeyListener{
     
+    Gamepanel gp;
     public boolean upPressed, leftPressed ,rightPressed,ATK;
-
+    public KeyHandler(Gamepanel gp){
+        this.gp = gp;
+    }
     @Override
     public void keyTyped(KeyEvent e) {
     
@@ -17,6 +20,43 @@ public class KeyHandler implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+        if(gp.gameState == gp.titlleState){
+            if(code == KeyEvent.VK_W){
+                if(gp.ui.Commandnum !=0){
+                gp.ui.Commandnum--; 
+                }
+            }
+            if(code == KeyEvent.VK_S){
+                if(gp.ui.Commandnum !=3){
+                gp.ui.Commandnum++;
+                }
+            }
+            if(code == KeyEvent.VK_ENTER){
+                if(gp.ui.Commandnum == 0){
+                    gp.gameState = gp.playState;
+                    gp.Stage = 1;
+                }
+                if(gp.ui.Commandnum == 1){
+                    gp.gameState = gp.playState;
+                    gp.Stage = 2;
+                }
+                if(gp.ui.Commandnum == 2){
+                    gp.gameState = gp.playState;
+                    gp.Stage = 3;
+                }
+                if(gp.ui.Commandnum == 3){
+                    System.exit(0);
+                }
+            }
+            if(code == KeyEvent.VK_ESCAPE){
+                System.exit(0);
+            }
+        }
+        if(gp.gameState == gp.playState){
+            if(code == KeyEvent.VK_ESCAPE){
+                gp.gameState = gp.titlleState;
+            }
+        }
         if(code == KeyEvent.VK_W){
             upPressed = true;
         }
@@ -28,6 +68,15 @@ public class KeyHandler implements KeyListener{
         }
         if(code == KeyEvent.VK_J){
             ATK = true;
+        }
+        if(code == KeyEvent.VK_P){
+            if(gp.gameState == gp.playState){
+                gp.gameState = gp.pauseState2;
+                
+            }
+            else if(gp.gameState == gp.pauseState2){
+                gp.gameState = gp.playState;
+            }
         }
         
     }

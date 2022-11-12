@@ -79,7 +79,7 @@ public class Hound extends Enemy {
         //blast.updateBlast();
         gp.repaint();
         State = "ATK";
-        blast1.add(new Blast(x,y+50));
+        //blast1.add(new Blast(x,y+50));
         gp.repaint();
         try{
             thread.sleep(10);

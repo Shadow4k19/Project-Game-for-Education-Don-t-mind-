@@ -20,7 +20,15 @@ public class backgound {
     public BufferedImage getImage(){
         BufferedImage image = null;
         try{
+            if(gp.Stage == 1|| gp.gameState == gp.titlleState){
             image = ImageIO.read(new File("tile\\Map_01.png"));
+            }
+            if(gp.Stage == 2){
+                image = ImageIO.read(new File ("tile\\Map_2.png"));
+            }
+            if(gp.Stage == 3){
+                image = ImageIO.read(new File("tile\\Map_03.png"));
+            }
         }catch(Exception e){
             System.err.println(e);
         }

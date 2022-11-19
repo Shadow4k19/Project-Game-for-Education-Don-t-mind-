@@ -13,10 +13,15 @@ public class UI {
     public String message;
     public boolean messageOn = false;
     public int Commandnum = 0 ;
+    public int Time = 0;
     public UI(Gamepanel gp){
         this.gp = gp;
+        setTime();
         arial_40 = new Font("Arial",Font.PLAIN,40);
         arial_80B = new Font("Arial",Font.BOLD,80);
+    }
+    public void setTime(){
+        Time = 300;
     }
     public void showMassage(String text){
         message = text;
@@ -35,6 +40,64 @@ public class UI {
         }
         if(gp.Stage != 0&&Commandnum !=3&& gp.gameState == gp.playState){
             drawPlay();
+            setTime();
+            if(gp.Stage == 1){
+                g2.drawString("Hp = "+gp.hound.Hp,550,550);
+                g2.setColor(Color.black);
+                g2.drawString("Time = "+Time, 255, 40);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (true) {                            
+                            Time--;
+                            gp.repaint();
+                            try {
+                               //thread.sleep(1000);
+                            } catch (Exception e) {
+                                System.err.println(e);
+                            }
+                        }
+                    }
+                });
+            }
+            if(gp.Stage == 2){
+                g2.drawString("Hp = "+gp.orc.Hp,550,550);
+                g2.setColor(Color.black);
+                 g2.drawString("Time = "+Time, 255, 40);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (true) {                            
+                            Time--;
+                            gp.repaint();
+                            try {
+                               //thread.sleep(1000);
+                            } catch (Exception e) {
+                                System.err.println(e);
+                            }
+                        }
+                    }
+                });
+            }
+            if(gp.Stage == 3){
+                g2.drawString("Hp = "+gp.aku.Hp,550,550);
+                 g2.setColor(Color.black);
+                 g2.drawString("Time = "+Time, 255, 40);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (true) {                            
+                            Time--;
+                            gp.repaint();
+                            try {
+                               //thread.sleep(1000);
+                            } catch (Exception e) {
+                                System.err.println(e);
+                            }
+                        }
+                    }
+                });
+            }
         }
         if(gp.gameState == gp.pauseState2){
             drawPause();

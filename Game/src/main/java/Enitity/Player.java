@@ -9,9 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Player extends Entity{
@@ -30,25 +28,21 @@ public class Player extends Entity{
         this.x = x;
         this.y = y;
         this.Hp = Hp;
+        thread.start();
         
         //theard.start();
         setDefaultValues();
         getImage();
-        
     }
+    
     public void setDefaultValues(){
-        //x = 0;
-        //y = 350;
+        x = 0;
+        y = 350;
         speed = 5;
         jumphigh = 150;
         direction = "right";
         //Hp = 3;
         alive = true;
-        try{
-        project_tile = new Blast(gp);
-        }catch(Exception e){
-            
-        }
     }
     public void update(){
         if(keyH.leftPressed==true||keyH.rightPressed==true||keyH.upPressed==true){
@@ -94,9 +88,16 @@ public class Player extends Entity{
             count = 0;
         }    
     }
-           if(keyH.ATK == true && project_tile.alive == false){
+           if(keyH.ATK == true){
+                try {
+                project_tile = new Blast(gp);
+                } catch (IOException ex) {
+                    
+                }
+                //if(project_tile.alive){
                 project_tile.set(x,y,direction,true,this);
                 gp.projecttile.add(project_tile);
+                //}
             }
 
         if(lastPress==2&&y==350){

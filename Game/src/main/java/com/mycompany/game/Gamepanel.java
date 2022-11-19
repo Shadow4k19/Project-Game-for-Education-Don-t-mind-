@@ -2,9 +2,11 @@
 package com.mycompany.game;
 
 import Backgound.backgound;
+import Enitity.Aku;
 import Enitity.Blast;
 import Enitity.Entity;
 import Enitity.Hound;
+import Enitity.Orc;
 import Enitity.Player;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -29,6 +31,8 @@ public class Gamepanel extends JPanel implements Runnable{
     Thread gameThread;
     Player player = new Player(this, keyH,0,350,3);
     Hound hound = new Hound(this);
+    Orc orc = new Orc(this);
+    Aku aku = new Aku(this);
     backgound backgound = new backgound(this);
     public UI ui = new UI(this);
     public ArrayList<Entity> projecttile = new ArrayList<>();
@@ -113,10 +117,10 @@ public class Gamepanel extends JPanel implements Runnable{
             hound.update();
         }
         if(Stage == 2){
-            
+            orc.update();
         }
         if(Stage == 3){
-            
+            aku.update();
         }
         }
         if(gameState == pauseState2){
@@ -145,11 +149,13 @@ public class Gamepanel extends JPanel implements Runnable{
         if(Stage == 2){
             backgound.draw(g2);
             player.draw(g2);
+            orc.draw(g2);
             ui.draw(g2);
         }
         if(Stage == 3){
             backgound.draw(g2);
             player.draw(g2);
+            aku.draw(g2);
             ui.draw(g2);
         }
         if(gameState == pauseState2){

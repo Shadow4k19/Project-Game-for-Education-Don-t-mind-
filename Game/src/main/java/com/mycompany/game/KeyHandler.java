@@ -35,14 +35,20 @@ public class KeyHandler implements KeyListener{
                 if(gp.ui.Commandnum == 0){
                     gp.gameState = gp.playState;
                     gp.Stage = 1;
+                    gp.player.setDefaultValues();
+                    gp.hound.setDefaultValues();
                 }
                 if(gp.ui.Commandnum == 1){
                     gp.gameState = gp.playState;
                     gp.Stage = 2;
+                    gp.player.setDefaultValues();
+                    gp.orc.setDefaultValues();
                 }
                 if(gp.ui.Commandnum == 2){
                     gp.gameState = gp.playState;
                     gp.Stage = 3;
+                    gp.player.setDefaultValues();
+                    gp.aku.setDefaultValues();
                 }
                 if(gp.ui.Commandnum == 3){
                     System.exit(0);

@@ -20,7 +20,7 @@ public class Blast extends Project_tile{
         getImage();
     }
     public void getImage() throws IOException{
-        left1 = ImageIO.read(new File("attack animation//Blast.png"));
-        right1 = ImageIO.read(new File("attatck animetion//Blast1.png"));
+        left1 = ImageIO.read(new File("attack animation\\Blast1.png"));
+        right1 = ImageIO.read(new File("attack animation\\Blast.png"));
     }
 }

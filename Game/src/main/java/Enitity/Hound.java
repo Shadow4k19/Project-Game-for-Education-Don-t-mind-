@@ -5,6 +5,7 @@ import com.mycompany.game.Gamepanel;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -102,4 +103,7 @@ public class Hound extends Enemy {
     }
     }
    });
+    public Rectangle2D getbound(){
+    	return (new Rectangle2D.Double(x,y,25,25));
+    }
 }

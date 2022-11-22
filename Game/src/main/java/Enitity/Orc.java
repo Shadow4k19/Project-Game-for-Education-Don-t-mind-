@@ -2,6 +2,7 @@ package Enitity;
 
 import com.mycompany.game.Gamepanel;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -56,15 +57,6 @@ public class Orc extends Enemy{
              }
          }
           g2.drawImage(image,x, y, 200, 200,null);
-            /*for (int i = 0; i < blast1.size(); i++) {
-                Blast blast = blast1.get(i);
-                blast.draw(g2, i);
-                blast.updateBlast();
-                blast.count++;
-                if (blast.x < 0) {
-                    blast1.remove(i);
-                }
-            }*/
      }
    Thread thread = new Thread(new Runnable() {
     @Override
@@ -84,5 +76,8 @@ public class Orc extends Enemy{
     }
     }
    });
+    public Rectangle2D getbound(){
+    	return (new Rectangle2D.Double(x,y,25,25));
+    }
     }
 

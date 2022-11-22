@@ -102,6 +102,76 @@ public class UI {
         if(gp.gameState == gp.pauseState2){
             drawPause();
         }
+        if(gp.gameState == gp.gameoverState){
+            drawGameOVER();
+        }
+        if(gp.gameState == gp.winState){
+            drawWin();
+        }
+        if(gp.gameState == gp.game_clear){
+            drawGame_clear();
+        }
+    }
+    public void drawGame_clear(){
+        g2.setColor(Color.black);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHieght);
+        String text = "Game Clear";
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,80F));
+        int lenght = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        int x = gp.screenWidth/2 - lenght/2;
+        int y = gp.screenHieght/4;
+        g2.drawString(text, x, y);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,20F));
+        y = gp.screenHieght/2;
+        text = "ESC";
+        g2.drawString(text, x+200, y+50);
+    }
+    public void drawWin(){
+        g2.setColor(Color.black);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHieght);
+        String text = "State Clear";
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,80F));
+        int lenght = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        int x = gp.screenWidth/2 - lenght/2;
+        int y = gp.screenHieght/4;
+        g2.drawString(text, x, y);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,20F));
+        y = gp.screenHieght/2;
+        text = "Next";
+        g2.drawString(text, x+200, y+50);
+        if(Commandnum == 0){
+            g2.drawString(">", x+180, y+50);
+        }
+        text = "Main Menu";
+        g2.drawString(text, x+175, y+100);
+        if(Commandnum == 1){
+            g2.drawString(">", x+150, y+100);
+        }
+    }
+    public void drawGameOVER(){
+        g2.setColor(Color.black);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHieght);
+        String text = "GAME OVER";
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,80F));
+        int lenght = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        int x = gp.screenWidth/2 - lenght/2;
+        int y = gp.screenHieght/4;
+        g2.drawString(text, x, y);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,20F));
+        y = gp.screenHieght/2;
+        text = "Retry";
+        g2.drawString(text, x+220, y+50);
+        if(Commandnum == 0){
+            g2.drawString(">", x+200, y+50);
+        }
+        text = "Main Menu";
+        g2.drawString(text, x+195, y+100);
+        if(Commandnum == 1){
+            g2.drawString(">", x+170, y+100);
+        }
     }
     public void drawPause(){
         String text = "PAUSE";

@@ -2,10 +2,14 @@
 package Enitity;
 
 import com.mycompany.game.Gamepanel;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 
 
 public class Project_tile extends Entity{
-    Entity player;
+    public Entity player;
     public Project_tile(Gamepanel gp){
         super(gp);
     }
@@ -16,7 +20,9 @@ public class Project_tile extends Entity{
         this.alive = alive;
         this.player = player;
         this.Hp = 80; 
+        getImage();
     }
+    @Override
     public void update(){
         switch(direction){
             case"left":{
@@ -42,5 +48,28 @@ public class Project_tile extends Entity{
             count = 0;
         }   
         }
+        public void getImage(){
+        try{
+        left1 = ImageIO.read(new File("attack animation\\Blast1.png"));
+        right1 = ImageIO.read(new File("attack animation\\Blast.png"));
+        }
+        catch(Exception e){
+            
+        }
     }
+    public void draw(Graphics2D g2){
+        BufferedImage image = null;
+        switch(direction){
+            case"left":{
+                image = left1;
+            }
+            case"right":{
+                image = right1;
+        }
+    }
+        g2.drawImage(image,x, y,100,100,null);
+    }
+    
+}
+
 

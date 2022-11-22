@@ -3,6 +3,7 @@ package Enitity;
 
 import com.mycompany.game.Gamepanel;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -86,4 +87,7 @@ public class Aku extends Enemy{
     }
     }
    });
+    public Rectangle2D getbound(){
+    	return (new Rectangle2D.Double(x,y,25,25));
+    }
     }

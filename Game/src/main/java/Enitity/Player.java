@@ -6,9 +6,9 @@ import com.mycompany.game.KeyHandler;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
@@ -20,6 +20,7 @@ public class Player extends Entity{
     public long lassPress = 0;
     public int count = 0;
     public int sprite = 1;
+    //public ArrayList<Blast> blast = new ArrayList<Blast>();
     
     public Player(Gamepanel gp,KeyHandler keyH,int x ,int y,int Hp){
         super(gp);
@@ -41,7 +42,8 @@ public class Player extends Entity{
         speed = 5;
         jumphigh = 150;
         direction = "right";
-        //Hp = 3;
+        project_tile = new Project_tile(gp);
+        Hp = 3;
         alive = true;
     }
     public void update(){
@@ -79,25 +81,26 @@ public class Player extends Entity{
         }
         count++;
         if(count >10){
-            if(sprite==1){
-                sprite=2;
+            if(sprite == 1){
+                sprite = 2;
             }
             else if(sprite == 2){
-                sprite=1;
+                sprite = 1;
             }
             count = 0;
         }    
     }
-           if(keyH.ATK == true){
-                try {
+           if(keyH.ATK == true && project_tile.alive == false){
+                /*try {
                 project_tile = new Blast(gp);
                 } catch (IOException ex) {
                     
-                }
+                }*/
                 //if(project_tile.alive){
                 project_tile.set(x,y,direction,true,this);
                 gp.projecttile.add(project_tile);
                 //}
+                gp.blast.add(new Blast(x,y,direction));
             }
 
         if(lastPress==2&&y==350){
@@ -109,6 +112,14 @@ public class Player extends Entity{
         if(x>550){
             x = 550;
         }
+            for(int i = 0 ; i < gp.projecttile.size();i++){
+            if(gp.projecttile.get(i).alive == true){
+                gp.projecttile.get(i).update();
+            }
+            if(gp.projecttile.get(i).alive == false){
+                gp.projecttile.remove(i);
+            }
+    }
     }
 
     public BufferedImage getImage(){
@@ -163,7 +174,16 @@ public class Player extends Entity{
              image1 = left1;
              gp.repaint();
          }
-     }
+                 for(int i = 0 ; i< gp.projecttile.size(); i++){
+            if(gp.projecttile.get(i)!= null){
+                gp.projecttile.get(i).draw(g2);
+                gp.projecttile.get(i).update();
+            }
+            if(gp.projecttile.get(i).alive == false){
+                gp.projecttile.remove(i);
+            }
+        }
+       }
 
     Thread thread = new Thread(new Runnable() {
     @Override
@@ -179,5 +199,8 @@ public class Player extends Entity{
     }
     }
 });
+    public Rectangle2D getbound(){
+    	return (new Rectangle2D.Double(x,y,25,25));
+    }
 }
     

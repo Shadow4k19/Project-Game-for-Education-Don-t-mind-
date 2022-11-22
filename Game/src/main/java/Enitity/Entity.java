@@ -2,6 +2,8 @@
 package Enitity;
 
 import com.mycompany.game.Gamepanel;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 public class Entity {
@@ -24,5 +26,11 @@ public class Entity {
     
     public void update(){
         
+    }
+    public void draw(Graphics2D g2){
+        
+    }
+     public Rectangle2D getbound(){
+    	return (new Rectangle2D.Double(x,y,25,25));
     }
 }
